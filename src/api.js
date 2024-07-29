@@ -18,6 +18,11 @@ export default {
             return apiClient.get(`/articles`);
         }
     },
+    getArticle(id){
+        return apiClient.get(`/article/${id}`);
+    },
+
+
     getUser(id) {
         return apiClient.get(`/users/${id}`);
     },
