@@ -12,9 +12,11 @@
     "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "axios": "^1.7.2",
+    "highlight.js": "^11.10.0",
     "marked": "^13.0.3",
     "vue": "^3.4.31",
     "vue-router": "^4.0.13",
+    "vue3-highlight": "^0.2.6",
     "vuetify": "^3.6.13-3.7.0-beta.0.0"
   },
   "devDependencies": {

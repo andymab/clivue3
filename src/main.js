@@ -1,6 +1,11 @@
 import { createApp } from 'vue'
 import { createVuetify } from 'vuetify'
  
+// import hljs from 'highlight.js'; // это если собираемся использовать как компонент
+// import VueHighlight from 'vue3-highlight';
+// import 'highlight.js/styles/default.css'; // Import styles for highlight.js
+
+
 import App from './App.vue'
 import router from './router'
 // Vuetify
@@ -15,10 +20,11 @@ const vuetify = createVuetify({
     directives,
   })
  
-import './style.css'
+// import './style.css'
 import 'vuetify/dist/vuetify.min.css'
  
 const app = createApp(App)
 app.use(router)
 app.use(vuetify)
+//app.use(VueHighlight) как копоненту
 app.mount('#app')

@@ -7,6 +7,7 @@
       <v-btn text to="/articles">Статьи</v-btn>
     </v-app-bar>
     <v-main>
+      
       <router-view />
     </v-main>
   </v-app>
@@ -17,3 +18,9 @@ export default {
   name: 'App'
 }
 </script>
+<style>
+.v-main{
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}
+</style>
