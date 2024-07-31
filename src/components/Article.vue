@@ -18,7 +18,7 @@
         <v-icon>mdi-chevron-double-up</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
-      <v-btn icon>
+      <v-btn icon @click="confimDialog = true">
         <v-icon>mdi-close-thick</v-icon>
       </v-btn>
     </v-app-bar>
@@ -43,6 +43,7 @@
         <v-textarea class="edit-area" auto-grow :model-value="serverData.post" ref='textarea_post' />
       </div>
     </div>
+
     <v-card :loading="loading" flat>
       <div class="d-flex justify-space-between align-center item-block py-2">
         <div class="d-flex align-center">
@@ -69,6 +70,21 @@
       <div v-html="convertedMarkdown" class="text-left"></div>
 
     </v-card>
+
+    <template>
+      <v-dialog v-model="confimDialog" persistent  full-width  width="auto">
+        <v-card  max-width="400">
+          <v-card-title>Подтверждение действия</v-card-title>
+          <v-card-text>{{ confirmMessage }}</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" @click="confimDialog = false">Отмена</v-btn>
+            <v-btn color="red" text @click="removeArticle">Удалить</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </template>
+
   </div>
 </template>
 
@@ -83,6 +99,8 @@ export default {
   name: 'Article',
   data() {
     return {
+      confimDialog:false,
+      confirmMessage:'Вы собираетесь удалить статью и ее производные. Вы уверены?',
       message: false,
       articleId: null,
       scrolledDown: false,
@@ -114,11 +132,21 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
+    setMessage(message){
+      this.message = message;
+      setTimeout(() => { this.message = false }, 5000);
+    },
+
+    async removeArticle() {
+      this.isedit = false;
+      const id = this.$route.params.id;
+      await api.removeArticle(id);
+      this.setMessage("Запись удалена");
+
+    },
     async saveContent() {
       this.isedit = false;
       const id = this.$route.params.id;
-
-      //this.$set(this.serverData,'post',this.$refs.textarea.modelValue);
 
       this.serverData.title = this.$refs.text_title.modelValue;
       //this.serverData.icon=;
@@ -129,9 +157,8 @@ export default {
       this.$nextTick(() => {
         this.myhighlight();
       });
-      this.message = "Данные записаны";
-      setTimeout(() => { this.message = false }, 5000);
-      await api.updateArticle(id, this.serverData);
+      
+      this.setMessage("Данные записаны");
       //this.onLoadArticle();
     },
 

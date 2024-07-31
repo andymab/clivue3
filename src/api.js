@@ -26,6 +26,10 @@ export default {
         return apiClient.put(`/article/${id}`, updatedData);
     },
 
+    removeArticle(id) {
+        return apiClient.delete(`/article/${id}`);
+    },
+
 
     getUser(id) {
         return apiClient.get(`/users/${id}`);
