@@ -10,8 +10,8 @@
         <v-icon>mdi-file-edit</v-icon>
       </v-btn>
 
-      <v-btn v-if="$refs.textarea && $refs.textarea.modelValue && $refs.textarea.modelValue.length > 0" icon
-        @click="saveContent">
+      <v-btn v-if="$refs.textarea_post && $refs.textarea_post.modelValue && $refs.textarea_post.modelValue.length > 0"
+        icon @click="saveContent">
         <v-icon>mdi-content-save</v-icon>
       </v-btn>
       <v-btn icon v-show="scrolledDown" @click="scrollToTop">
@@ -22,8 +22,26 @@
         <v-icon>mdi-close-thick</v-icon>
       </v-btn>
     </v-app-bar>
-    <div v-show="isedit" style="position: relative;width: 100%;height: 100vh;">
-      <v-textarea class="edit-area" auto-grow :model-value="serverData.post" ref='textarea' />
+
+    <template>
+      <v-snackbar v-model="message" bottom class="pyx-4">
+        <span class="mr-4">{{ message }}</span>
+        <v-btn color="green darken-1" text @click="message = false">
+          Понятно
+        </v-btn>
+      </v-snackbar>
+    </template>
+
+
+
+    <div v-show="isedit" style="width: 100%;height: 100vh;">
+      <v-text-field label="Заголовок" :model-value="serverData.title" ref='text_title' variant="outlined" clearable
+        hide-details class="my-4" />
+      <v-text-field label="Подзаголовок" :model-value="serverData.descr" ref='text_descr' variant="outlined" clearable
+        hide-details class="my-4" />
+      <div style="position: relative;width: 100%;height: 100vh;">
+        <v-textarea class="edit-area" auto-grow :model-value="serverData.post" ref='textarea_post' />
+      </div>
     </div>
     <v-card :loading="loading" flat>
       <div class="d-flex justify-space-between align-center item-block py-2">
@@ -33,11 +51,11 @@
           <div class="d-flex flex-column">
             <v-card-item>
               <v-card-title>
-                {{ title }}
+                {{ serverData && serverData.title ? serverData.title : 'Заголовок' }}
               </v-card-title>
 
               <v-card-subtitle>
-                {{ description }}
+                {{ serverData && serverData.descr ? serverData.descr : 'Подзаголовок' }}
               </v-card-subtitle>
             </v-card-item>
 
@@ -65,18 +83,17 @@ export default {
   name: 'Article',
   data() {
     return {
+      message: false,
       articleId: null,
       scrolledDown: false,
       icon: '',
       isedit: false,
-      title: 'Заголовок',
-      description: 'Подзаголовок',
       time_create: '',
       breadcrumbs: [],
       restime: '',
       loading: true,
       serverData: {},
-      convertedMarkdown:'',
+      convertedMarkdown: '',
 
     };
   },
@@ -103,12 +120,17 @@ export default {
 
       //this.$set(this.serverData,'post',this.$refs.textarea.modelValue);
 
-      this.serverData.post = this.$refs.textarea.modelValue;
+      this.serverData.title = this.$refs.text_title.modelValue;
+      //this.serverData.icon=;
+      this.serverData.descr = this.$refs.text_descr.modelValue;
+
+      this.serverData.post = this.$refs.textarea_post.modelValue;
       this.convertedMarkdown = marked(this.serverData.post)
       this.$nextTick(() => {
         this.myhighlight();
       });
-
+      this.message = "Данные записаны";
+      setTimeout(() => { this.message = false }, 5000);
       await api.updateArticle(id, this.serverData);
       //this.onLoadArticle();
     },
@@ -149,7 +171,7 @@ export default {
         this.restime = this.getlocaleDate(this.serverData.restime);
         this.breadcrumbs = this.serverData.breadcrumbs;
         this.breadcrumbs.splice(0, 0, { title: 'Home', id: '' });
-          this.convertedMarkdown = marked(this.serverData.post)
+        this.convertedMarkdown = marked(this.serverData.post)
         //this.convertedMarkdown = marked(this.serverData.post); //'# Marked in Node.js\n\nRendered by **marked**.'  this.serverData.
         //Использование  this.$nextTick()  гарантирует, что код подсветки синтаксиса будет вызван после обновления DOM
         this.$nextTick(() => {
@@ -170,11 +192,11 @@ export default {
 
     handleKeyDown(event) {
       if (event.ctrlKey && (event.key === 's' || event.key === 'ы')) {
-        console.log('save');
+        this.saveContent();
         event.preventDefault();
       }
       if (event.ctrlKey && (event.key === 'e' || event.key === 'у')) {
-        console.log('edit');
+        this.isedit = !this.isedit;
         event.preventDefault();
 
       }
