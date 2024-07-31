@@ -22,6 +22,10 @@ export default {
         return apiClient.get(`/article/${id}`);
     },
 
+    updateArticle(id, updatedData) {
+        return apiClient.put(`/article/${id}`, updatedData);
+    },
+
 
     getUser(id) {
         return apiClient.get(`/users/${id}`);
