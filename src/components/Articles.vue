@@ -80,8 +80,10 @@ export default {
     },
     async onLoadArticles() {
       try {
+        const articleId = this.$route.params.id;
+
         this.loading = true
-        const response = await api.getArticles();
+        const response = await api.getArticles(articleId);
 
         this.serverItems = response.data;
         this.totalItems = this.serverItems.length;

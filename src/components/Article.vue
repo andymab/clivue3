@@ -9,9 +9,13 @@
       <v-btn icon>
         <v-icon>mdi-file-edit</v-icon>
       </v-btn>
+    
       <v-btn icon>
         <v-icon>mdi-content-save</v-icon>
       </v-btn>
+       <v-btn icon v-show="scrolledDown" @click="scrollToTop">
+        <v-icon>mdi-chevron-double-up</v-icon>
+      </v-btn> 
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-close-thick</v-icon>
@@ -58,6 +62,8 @@ export default {
   name: 'Article',
   data() {
     return {
+      articleId:null,
+      scrolledDown: false,
       icon: '',
       title: 'Заголовок',
       description: 'Подзаголовок',
@@ -76,12 +82,24 @@ export default {
 
   },
   mounted() {
+    const articleId = this.$route.params.id;
     window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('scroll', this.handleScroll);
   },
   beforeUnmount() {
-    // window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
+    handleScroll() {
+      this.scrolledDown = window.scrollY > 60;
+    },
+    scrollToTop(){
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    },
     getlocaleDate(timestamp) {
       if (!timestamp) {
         return false;
@@ -102,7 +120,7 @@ export default {
         this.time_create = this.getlocaleDate(this.serverData.time_create);
         this.restime = this.getlocaleDate(this.serverData.restime);
         this.breadcrumbs = this.serverData.breadcrumbs;
-        this.breadcrumbs.splice(0, 0, { title: 'Home', href: '/articles' });
+        this.breadcrumbs.splice(0, 0, { title: 'Home', id:'' });
 
         this.convertedMarkdown = marked(this.serverData.post); //'# Marked in Node.js\n\nRendered by **marked**.'  this.serverData.
         //Использование  this.$nextTick()  гарантирует, что код подсветки синтаксиса будет вызван после обновления DOM
@@ -120,12 +138,8 @@ export default {
         this.loading = false
       }
     },
-    async handleBreadcrumbsClick(id) {
-      // this.loading = true
-      // const response = await api.getArticles(id);
-      // this.serverItems = response.data;
-      // this.totalItems = this.serverItems.length;
-      // this.loading = false
+    async handleBreadcrumbsClick(item) {
+      this.$router.push('/articles/'+ item.id);
     },
 
     handleKeyDown(event) {
