@@ -8,6 +8,8 @@ import { createVuetify } from 'vuetify'
 
 import App from './App.vue'
 import router from './router'
+import store from './store'; // Импорт хранилища
+
 // Vuetify
 import 'vuetify/styles'
  
@@ -24,6 +26,7 @@ const vuetify = createVuetify({
 import 'vuetify/dist/vuetify.min.css'
  
 const app = createApp(App)
+app.use(store)
 app.use(router)
 app.use(vuetify)
 //app.use(VueHighlight) как копоненту

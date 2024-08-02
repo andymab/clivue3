@@ -16,8 +16,13 @@
     "marked": "^13.0.3",
     "vue": "^3.4.31",
     "vue-router": "^4.0.13",
+<<<<<<< HEAD
     "vue3-highlight": "^0.2.6",
     "vuetify": "^3.6.13-3.7.0-beta.0.0"
+=======
+    "vuetify": "^3.6.13-3.7.0-beta.0.0",
+    "vuex": "^4.1.0"
+>>>>>>> main
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
