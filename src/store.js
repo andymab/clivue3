@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import Cookies from 'js-cookie';
 
 export default createStore({
   state: {
@@ -7,6 +8,7 @@ export default createStore({
   mutations: {
     setToken(state, token) {
       state.token = token;
+      Cookies.set('token', token);
     },
   },
   actions: {
@@ -15,6 +17,14 @@ export default createStore({
     },
   },
   getters: {
-    getToken: (state) => state.token,
+    getToken: (state) => {
+      if (!state.token) {
+        const token = Cookies.get('token');
+        if (token) {
+          state.token = token;
+        }
+      }
+      return state.token;
+    },
   },
 });
