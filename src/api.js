@@ -1,16 +1,39 @@
 // api.js
 import axios from 'axios';
 import config from './config/axios.js';
+import store from './store'; // хранилище
+
+
+const token = store.getters.getToken;
 
 const apiClient = axios.create({
     baseURL: config.baseURL,
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${config.token}`
+        'Authorization': `Bearer ${token}`
     }
 });
 
+// Добавляем интерсептор для запросов
+apiClient.interceptors.request.use(
+    (config) => {
+        const token = store.getters.getToken; // Получаем токен из хранилища
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`; // Добавляем токен в заголовок
+        }
+        return config; // Возвращаем изменённый конфиг
+    },
+    (error) => {
+        return Promise.reject(error); // Обработка ошибок
+    }
+);
+
+
 export default {
+    getToken(data) {
+         return apiClient.post(`/gettoken`, data);
+    },
+
     getArticles(id) {
         if (id) {
             return apiClient.get(`/articles/${id}`);
