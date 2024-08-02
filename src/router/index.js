@@ -21,7 +21,6 @@ const router = createRouter({
   routes
 })
 
-
 router.beforeEach((to, from, next) => {
   // const token = router.app.$store.getters.getToken;
   const token = store.getters.getToken;
