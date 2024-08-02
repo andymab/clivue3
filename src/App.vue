@@ -1,10 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar app  v-if="$route.path !== '/login'">
+    <v-app-bar app v-if="$route.path !== '/login'">
       <v-toolbar-title>Vue Vite Vuetify</v-toolbar-title>
       <v-btn text to="/">Home</v-btn>
       <v-btn text to="/about">About</v-btn>
       <v-btn text to="/articles">Статьи</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn icon="mdi-logout" @click="logout" size="small"></v-btn>
     </v-app-bar>
     <v-main>
       <router-view />
@@ -14,6 +16,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.push('/');
+    }
+  },
 }
 </script>

@@ -4,13 +4,11 @@ import config from './config/axios.js';
 import store from './store'; // хранилище
 
 
-const token = store.getters.getToken;
-
 const apiClient = axios.create({
     baseURL: config.baseURL,
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${config.token}`
     }
 });
 

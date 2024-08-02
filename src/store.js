@@ -7,14 +7,24 @@ export default createStore({
   },
   mutations: {
     setToken(state, token) {
-      state.token = token;
-      Cookies.set('token', token);
+      if (token) {
+        state.token = token;
+        Cookies.set('token', token);
+      } else {
+        Cookies.remove('token');
+        Cookies.remove('route');
+        state.token = token;
+      }
+
     },
   },
   actions: {
     login({ commit }, token) {
       commit('setToken', token);
     },
+    logout({ commit }) {
+      commit('setToken', null);
+    }
   },
   getters: {
     getToken: (state) => {

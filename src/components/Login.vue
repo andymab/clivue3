@@ -1,10 +1,12 @@
 <template>
     <v-sheet class="mx-auto" max-width="300">
-        <v-form validate-on="submit lazy" @submit.prevent="login">
-            <v-text-field v-model="email" :rules="emailRules" type="email" label="Email" required></v-text-field>
-            <v-text-field v-model="password" type="password" label="Пароль" required></v-text-field>
-            <v-btn :loading="loading" class="mt-2" text="Отправить" type="submit" block></v-btn>
-        </v-form>
+        <v-card>
+            <v-form validate-on="submit lazy" @submit.prevent="login">
+                <v-text-field v-model="email" :rules="emailRules" type="email" label="Email" required></v-text-field>
+                <v-text-field v-model="password" type="password" label="Пароль" required></v-text-field>
+                <v-btn :loading="loading" class="mt-2" text="Отправить" type="submit" block></v-btn>
+            </v-form>
+        </v-card>
     </v-sheet>
 </template>
 
@@ -23,7 +25,7 @@ export default {
                     return true
                 },
             ],
-            email:'',
+            email: '',
             password: '',
             loading: false,
         };
@@ -32,7 +34,6 @@ export default {
         async login() {
             const response = await api.getToken({ email: this.email, password: this.password });
             const data = response.data;
-            console.log(data);
             if (data.status === 'success') {
                 const token = data.token;
                 this.$store.dispatch('login', token); // Сохранение токена в хранилище
