@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app>
+    <v-app-bar app  v-if="$route.path !== '/login'">
       <v-toolbar-title>Vue Vite Vuetify</v-toolbar-title>
       <v-btn text to="/">Home</v-btn>
       <v-btn text to="/about">About</v-btn>
