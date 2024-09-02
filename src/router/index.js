@@ -6,6 +6,7 @@ import About from '../components/About.vue'
 import Article from '../components/Article.vue'
 import Articles from '../components/Articles.vue'
 import Upload from '../components/Upload.vue'
+import Lesson from '../components/Lesson.vue'
 
 
 
@@ -13,10 +14,12 @@ const routes = [
   { path: '/', component: HelloWorld },
   { path: '/Login', component: Login },
   { path: '/about', component: About },
-  { path: '/upload', component: Upload },
   { path: '/articles', component: Articles },
   { path: '/articles/:id', component: Articles },
   { path: '/article/:id', component: Article },
+
+  { path: '/upload', component: Upload },
+  { path: '/lesson', component: Lesson },
 ]
 
 const router = createRouter({

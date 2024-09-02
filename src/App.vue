@@ -6,6 +6,7 @@
       <v-btn text to="/about">About</v-btn>
       <v-btn text to="/articles">Статьи</v-btn>
       <v-btn text to="/upload">Загрузка</v-btn>
+      <v-btn text to="/lesson">Экзамен в ГАИ</v-btn>
       <v-spacer></v-spacer>
       <v-btn icon="mdi-logout" @click="logout" size="small"></v-btn>
     </v-app-bar>
